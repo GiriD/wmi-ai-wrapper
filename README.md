@@ -14,7 +14,7 @@ A Python CLI wrapper for Windows Management Instrumentation (WMI) built with UV.
 ## Prerequisites
 
 - Windows OS (WMI is Windows-specific)
-- Python 3.8+
+- Python 3.10+
 - [UV Package Manager](https://github.com/astral-sh/uv)
 
 ## Quick Start
