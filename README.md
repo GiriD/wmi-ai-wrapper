@@ -17,6 +17,8 @@ A Python CLI wrapper for Windows Management Instrumentation (WMI) built with UV.
 - Python 3.10+
 - [UV Package Manager](https://github.com/astral-sh/uv)
 
+> **Note:** This project uses UV for package management. All commands must be prefixed with `uv run` (e.g., `uv run wmi-cli`).
+
 ## Quick Start
 
 ```powershell
@@ -26,13 +28,13 @@ powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
 # 2. Clone and navigate to project
 cd wmi-ai-wrapper
 
-# 3. Install dependencies
-uv pip install -e .
+# 3. Sync dependencies
+uv sync
 
 # 4. Try it out
-wmi-cli --help
-wmi-cli system-info
-wmi-cli services --state Running
+uv run wmi-cli --help
+uv run wmi-cli system-info
+uv run wmi-cli services --state Running
 ```
 
 ## WMI Agent (AI Interface)
@@ -42,20 +44,20 @@ The WMI Agent provides a natural language interface for Windows system managemen
 ### Quick Start with Agent
 
 ```powershell
-# Install agent dependencies (requires pre-release packages)
-uv pip install -e ".[agent]" --prerelease=allow
+# Sync dependencies (includes agent extras)
+uv sync
 
 # Run with Ollama (local)
 ollama pull gpt-oss:120b
 ollama serve
-wmi-agent
+uv run wmi-agent
 
 # Run with Azure OpenAI
-set AGENT_PROVIDER=azure
-set AZURE_OPENAI_ENDPOINT=https://your-resource.openai.azure.com
-set AZURE_OPENAI_API_KEY=your-key
-set AZURE_OPENAI_DEPLOYMENT=gpt-4o
-wmi-agent
+$env:AGENT_PROVIDER="azure"
+$env:AZURE_OPENAI_ENDPOINT="https://your-resource.openai.azure.com"
+$env:AZURE_OPENAI_API_KEY="your-key"
+$env:AZURE_OPENAI_DEPLOYMENT="gpt-4o"
+uv run wmi-agent
 ```
 
 ### Example Agent Queries
@@ -88,30 +90,30 @@ You: Get system uptime
 
 ```powershell
 # System info
-wmi-cli system-info
-wmi-cli system-info --output-format json
+uv run wmi-cli system-info
+uv run wmi-cli system-info --output-format json
 
 # Services
-wmi-cli services --state Running
-wmi-cli services --start-mode Auto --state Stopped
+uv run wmi-cli services --state Running
+uv run wmi-cli services --start-mode Auto --state Stopped
 
 # Processes
-wmi-cli processes
-wmi-cli processes --name "chrome.exe"
+uv run wmi-cli processes
+uv run wmi-cli processes --name "chrome.exe"
 
 # Disks
-wmi-cli disks
-wmi-cli disks --drive-type 3  # Local disks only
+uv run wmi-cli disks
+uv run wmi-cli disks --drive-type 3  # Local disks only
 
 # Network
-wmi-cli network --output-format json
+uv run wmi-cli network --output-format json
 
 # WMI Classes
-wmi-cli list-classes --filter-text "Win32"
-wmi-cli class-info Win32_Service
+uv run wmi-cli list-classes --filter-text "Win32"
+uv run wmi-cli class-info Win32_Service
 
 # Raw queries
-wmi-cli query "SELECT * FROM Win32_OperatingSystem"
+uv run wmi-cli query "SELECT * FROM Win32_OperatingSystem"
 ```
 
 ## Python API
